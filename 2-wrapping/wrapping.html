@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html" />
+    
+    <title>Wrapping Web Assembly</title>
+
+    <style>
+      * { background-color: #363636; color: #f6f6ff; }
+    </style>
+
+    <link rel="shortcut icon" type="image/svg+xml" href="./assets/wasm.svg" />
+    <script src="./wrapping.js" defer></script>
+  </head>
+
+  <body>
+    <span>Hey there, Web Assembly!</span>
+
+    <input id="numberA" type="number" />
+    <input id="numberB" type="number" />
+
+    <button id="addNumbersCcall">Add ccall</button>
+    <button id="addNumbersCwrap">Add cwrap</button>
+
+    <span id="result">Result:</span>
+
+    <script type="text/javascript">
+      const ccallButton = document.getElementById("addNumbersCcall");
+      const cwrapButton = document.getElementById("addNumbersCwrap");
+
+      const getInputValues = () => {
+        const numberA = document.getElementById("numberA").value || 0;
+        const numberB = document.getElementById("numberB").value || 0;
+        return { numberA, numberB };
+      };
+
+      const setResult = (result, isCcall) => {
+        const resultSpan = document.getElementById("result");
+        const method = isCcall ? "ccall" : "cwrap";
+        resultSpan.innerText = `Result: ${result} (${method})`;
+      };
+
+      ccallButton.addEventListener("click", () => {
+        const { numberA, numberB } = getInputValues();
+
+        const result = Module.ccall(
+          "addIntegers"
+          , "number"
+          , ["number", "number"]
+          , [numberA, numberB]
+        );
+
+        setResult(result, true);
+      });
+
+      cwrapButton.addEventListener("click", () => {
+        const { numberA, numberB } = getInputValues();
+
+        const addIntegersWrap = Module.cwrap(
+          "addIntegers"
+          , "number"
+          , ["number", "number"]
+        );
+
+        const result = addIntegersWrap(numberA, numberB);
+
+        setResult(result, false);
+      });
+    </script>
+  </body>
+</html>
