@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html" />
+    
+    <title>Encoding and Decoding Structures Web Assembly</title>
+
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="shortcut icon" type="image/svg+xml" href="./assets/wasm.svg" />
+
+    <script type="module" src="./js/loadWasm.js"></script>
+    <script type="module" src="./js/sum.js"></script>
+    <script type="module" src="./js/sumPoint.js"></script>
+  </head>
+
+  <body>
+    <span>Hey there, Web Assembly!</span>
+    <br /><br />
+
+    <input id="numberAInput" type="number" />
+    <input id="numberBInput" type="number" />
+    <input id="numberCInput" type="number" />
+    <br /><br />
+    <button id="numberBtn">Sum</button>
+    <span id="numberSpan">Sum Result:</span>
+
+    <br /><br />
+    <br /><br />
+
+    <input id="pointXInput" type="number" />
+    <input id="pointYInput" type="number" />
+    <br /><br />
+    <button id="pointBtn">Sum Point</button>
+    <span id="pointSpan">Sum Point Result:</span>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html" />
+    <link rel="shortcut icon" type="image/svg+xml" href="./assets/wasm.svg" />
+
+    <title>Memory Web Assembly</title>
+
+    <link rel="stylesheet" href="./css/style.css" />
+    <script type="module" src="./js/loadWasm.js"></script>
+    <script type="module" src="./js/sumNumbers.js"></script>
+    <script type="module" src="./js/sumArray.js"></script>
+    <script type="module" src="./js/getHelloWorld.js"></script>
+  </head>
+
+  <body>
+    <span>Hey there, Web Assembly!</span>
+
+    <br /><br />
+    <input id="sumNumbersInput" type="number" />
+    <button id="sumNumbersBtn">Sum Numbers</button>
+    <span id="sumNumbersSpan">Sum Numbers Result:</span>
+
+    <br /><br />
+    <button id="sumArrayBtn">Sum Array</button>
+    <span id="sumArraySpan">Sum Array Result:</span>
+
+    <br /><br />
+    <button id="getHelloWorldBtn">Get HelloWorld</button>
+    <span id="getHelloWorldSpan">Message:</span>
+  </body>
+</html>
