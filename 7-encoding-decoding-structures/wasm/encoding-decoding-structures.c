@@ -1,6 +1,6 @@
 #include <emscripten.h>
 #include <stdlib.h>
-#include <stdint.h>
+#include <stdint.h>  // only to 'SIZE_MAX' be available
 #include <stdbool.h> // only to 'bool' data type be imported
 #include <stddef.h>  // only to 'wchar_t' data type be imported
 
@@ -14,6 +14,17 @@ typedef struct {
   int x;
   int y;
 } point;
+
+typedef struct {
+  long long value;
+  char c;
+} substruct;
+
+typedef struct {
+  int a;
+  int b;
+  substruct substructure;
+} mainstruct;
 
 int main() {
   return 0;
@@ -70,4 +81,24 @@ point* createPoint(int x, int y) {
   p->x = x;
   p->y = y; 
   return p;
+}
+
+EMSCRIPTEN_KEEPALIVE
+mainstruct* createMainStruct(int numberA, int numberB, long long value, char character) {
+  mainstruct* pointer = wasmMalloc(1, sizeof(mainstruct));
+  if (pointer == NULL) return NULL;
+
+  pointer->a = numberA;
+  pointer->b = numberB;
+  pointer->substructure.value = value;
+  pointer->substructure.c = character;
+  return pointer;
+}
+
+EMSCRIPTEN_KEEPALIVE
+int sumMainStruct(mainstruct* pointer) {
+  return pointer->a
+    + pointer->b
+    + pointer->substructure.value
+    + pointer->substructure.c;
 }

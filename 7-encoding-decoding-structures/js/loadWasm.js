@@ -93,9 +93,15 @@ else {
   wasmMemory = wasmExports.memory;
 }
 
-//  **********
-//  ** Maps **
-//  **********
+//  *********************
+//  ** Maps and Arrays **
+//  *********************
+const primitiveDataTypes = [
+  "char", "short", "int", "long", "long long"
+  , "float", "double", "long double"
+  , "bool", "size_t", "wchar_t", "void*"
+];
+
 const typesMap = {
   // Data Types Sizes in Bytes
   "char"           :  1
@@ -167,8 +173,8 @@ const encodeNumber = (value, numberBytes, buffer, offset = 0) => {
   }
 };
 
-const encodeStruct = (name, data, buffer) => {
-  let offset = 0;
+const encodeStruct = (name, data, buffer, offset = 0) => {
+  let cursor = offset;
 
   const structFormat = structsMap[name];
 
@@ -179,8 +185,12 @@ const encodeStruct = (name, data, buffer) => {
 
   for (const [property, type] of Object.entries(structFormat)) {
     const numberBytes = typesMap[type];
-    encodeNumber(data[property] ?? 0, numberBytes, buffer, offset);
-    offset += numberBytes;
+    const isTypePrimitive = primitiveDataTypes.includes(type);
+
+    if (isTypePrimitive) encodeNumber(data[property] ?? 0, numberBytes, buffer, cursor);
+    else encodeStruct(type, data[property] ?? {}, buffer, cursor);
+
+    cursor += numberBytes;
   }
 };
 
@@ -204,22 +214,24 @@ const startEncodeStruct = (name, data, memory, shouldUseMalloc = true) => {
   // - we will write the data as bytes, so we create a TypedArray with 8 bits each block
   // - the length (third parameter) is the structSize (in bytes)
   const buffer = new Uint8Array(memory.buffer, pointer, structSize);
-  encodeStruct(name, data, buffer);
+  encodeStruct(name, data, buffer, 0);
   return pointer;
 };
 
 const decodeNumber = (numberBytes, buffer, offset = 0) => {
   let value = 0;
 
+  // adding value <<= 8 after the or-bitwise-operator, the most significant byte
+  // willbe lost in the last iteration
   for (let currentByte = numberBytes - 1; currentByte >= 0; currentByte--) {
-    value |= buffer[offset + currentByte];
     value <<= 8;
+    value |= buffer[currentByte + offset];
   }
 
   return value;
 };
 
-const decodeStruct = (name, buffer) => {
+const decodeStruct = (name, buffer, offset = 0) => {
   const structFormat = structsMap[name];
 
   if (!structFormat) {
@@ -228,12 +240,16 @@ const decodeStruct = (name, buffer) => {
   }
 
   let decodedStruct = {};
-  let offset = 0;
+  let cursor = offset;
 
   for (const [property, type] of Object.entries(structFormat)) {
-    const typeSize = typesMap[map];
-    decodedStruct[property] = decodeNumber(typeSize, buffer, offset);
-    offset += typeSize;
+    const typeSize = typesMap[type];
+    const isTypePrimitive = primitiveDataTypes.includes(type);
+
+    if (isTypePrimitive) decodedStruct[property] = decodeNumber(typeSize, buffer, cursor);
+    else decodedStruct[property] = decodeStruct(type, buffer, cursor);
+
+    cursor += typeSize;
   }
 
   return decodedStruct;
@@ -248,12 +264,25 @@ const startDecodeStruct = (name, pointer, memory) => {
   }
 
   const buffer = new Uint8Array(memory.buffer, pointer, structSize);
-  return decodeStruct(name, buffer);
+  return decodeStruct(name, buffer, 0);
 };
 
+//  *************************
+//  ** Registering Structs **
+//  *************************
 registerStruct(
   "point"
   , { "x": "int", "y": "int" }
+);
+
+registerStruct(
+  "substruct"
+  , { "value": "long long", "c": "char" }
+);
+
+registerStruct(
+  "mainstruct"
+  , { "a": "int", "b": "int", "substructure": "substruct" }
 );
 
 export {
@@ -263,4 +292,5 @@ export {
   , encodeArray
   , decodeString
   , startEncodeStruct
+  , startDecodeStruct
 };
