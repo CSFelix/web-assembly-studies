@@ -13,26 +13,43 @@
     <script type="module" src="./js/loadWasm.js"></script>
     <script type="module" src="./js/sum.js"></script>
     <script type="module" src="./js/sumPoint.js"></script>
+    <script type="module" src="./js/nestedStruct.js"></script>
   </head>
 
   <body>
     <span>Hey there, Web Assembly!</span>
     <br /><br />
 
+    <h2>Sum Struct</h2>
     <input id="numberAInput" type="number" />
     <input id="numberBInput" type="number" />
     <input id="numberCInput" type="number" />
     <br /><br />
     <button id="numberBtn">Sum</button>
     <span id="numberSpan">Sum Result:</span>
-
-    <br /><br />
     <br /><br />
 
+    <h2>Encoding and Decoding Structs</h2>
     <input id="pointXInput" type="number" />
     <input id="pointYInput" type="number" />
     <br /><br />
     <button id="pointBtn">Sum Point</button>
+    <br /><br />
     <span id="pointSpan">Sum Point Result:</span>
+    <br /><br />
+    <span id="pointSpan2">Point Struct:</span>
+    <br /><br />
+
+    <h2>Nested Structs</h2>
+    <input id="nestedStructInputA" type="number" />
+    <input id="nestedStructInputB" type="number" />
+    <input id="nestedStructInputC" type="number" />
+    <input id="nestedStructInputD" type="text" maxlength="1" />
+    <br /><br />
+    <button id="nestedStructBtn">Create</button>
+    <br /><br />
+    <span id="nestedStructSumSpan">Sum:</span>
+    <br /><br />
+    <span id="nestedStructObjectSpan">Struct:</span>
   </body>
 </html>

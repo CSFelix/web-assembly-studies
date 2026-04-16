@@ -1,8 +1,15 @@
-import { wasmMemory, wasmExports, isWasmUsable, startEncodeStruct } from "./loadWasm.js";
+import {
+  wasmMemory
+  , wasmExports
+  , isWasmUsable
+  , startEncodeStruct
+  , startDecodeStruct
+} from "./loadWasm.js";
 
 if (isWasmUsable) {
   const pointBtn = document.getElementById("pointBtn");
   const pointSpan = document.getElementById("pointSpan");
+  const pointSpan2 = document.getElementById("pointSpan2");
   const pointXInput = document.getElementById("pointXInput");
   const pointYInput = document.getElementById("pointYInput");
 
@@ -10,7 +17,6 @@ if (isWasmUsable) {
     const pointXValue = pointXInput.value ?? 0;
     const pointYValue = pointYInput.value ?? 0;
 
-    console.log("Encoding Structure");
     let pointer = startEncodeStruct(
       "point"
       , { x: pointXValue, y: pointYValue }
@@ -26,18 +32,18 @@ if (isWasmUsable) {
     const sum = wasmExports.sumPoint(pointer);
     pointSpan.innerHTML = `Sum Point Result: ${sum}`;
     pointer = wasmExports.wasmFree(pointer);
-    pointXInput.focus();
-
-    console.log("Decoding Structure");
 
     pointer = wasmExports.createPoint(pointXValue, pointYValue);
+
     if (!pointer) {
       console.log("sumPointEncode null pointer.");
       return;
     }
 
-    console.log(pointer);
+    const struct = startDecodeStruct("point", pointer, wasmMemory);
+    pointSpan2.innerHTML = `Point Struct: ${JSON.stringify(struct)}`;
+
     pointer = wasmExports.wasmFree(pointer);
-    console.log(pointer);
+    pointXInput.focus();
   });
 }
