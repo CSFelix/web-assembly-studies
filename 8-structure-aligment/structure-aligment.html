@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html" />
+    
+    <title>Structure Alignment Web Assembly</title>
+
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="shortcut icon" type="image/svg+xml" href="./assets/wasm.svg" />
+
+    <script type="module" src="./js/loadWasm.js"></script>
+    <script type="module" src="./js/nestedStruct.js"></script>
+  </head>
+
+  <body>
+    <span>Hey there, Web Assembly!</span>
+    <br /><br />
+
+    <h2>Structure Alignment</h2>
+    <input id="structureAlignmentInputA" type="number" />
+    <input id="structureAlignmentInputB" type="number" />
+    <input id="structureAlignmentInputC" type="number" />
+    <input id="structureAlignmentInputD" type="text" maxlength="1" />
+    <br /><br />
+
+    <button id="structureAlignmentBtn">Create</button>
+    <br /><br />
+
+    <span id="structureAlignmentSumSpan">Sum:</span>
+    <br /><br />
+    
+    <span id="structureAlignmentObjectSpan">Struct:</span>
+  </body>
+</html>
