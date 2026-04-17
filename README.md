@@ -21,3 +21,4 @@
 - [5 - Malloc](https://github.com/CSFelix/web-assembly-studies/tree/main/5-malloc)
 - [6 - Exported Functions](https://github.com/CSFelix/web-assembly-studies/tree/main/6-exported-functions)
 - [7 - Encoding and Decoding Structures](https://github.com/CSFelix/web-assembly-studies/tree/main/7-encoding-decoding-structures)
+- [8 - Structure Alignment](https://github.com/CSFelix/web-assembly-studies/tree/main/8-structure-aligment)
