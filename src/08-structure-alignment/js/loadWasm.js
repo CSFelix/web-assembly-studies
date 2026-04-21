@@ -14,7 +14,7 @@ const fetchWasmFile = async (path) => {
 };
 
 const wasmExportsPromise = (async () => {
-  const wasmFile = await fetchWasmFile("./wasm/structure-aligment.wasm");
+  const wasmFile = await fetchWasmFile("./wasm/structure-alignment.wasm");
 
   if (!wasmFile) {
     console.log("WASM File not found.");
