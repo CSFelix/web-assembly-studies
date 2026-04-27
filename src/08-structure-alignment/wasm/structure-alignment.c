@@ -5,7 +5,7 @@
 #include <stddef.h>  // only to 'wchar_t' data type be imported
 
 typedef struct {
-  long long value;
+  int value;
   char c;
 } substruct;
 
@@ -13,6 +13,8 @@ typedef struct {
   int a;
   int b;
   substruct substructure;
+  int* pointer;
+  int** pointerOfPointer;
 } mainstruct;
 
 int main() {
@@ -53,7 +55,8 @@ void* wasmRealloc(void* pointer, size_t count, size_t size) {
 /////
 
 EMSCRIPTEN_KEEPALIVE
-mainstruct* createMainStruct(int numberA, int numberB, long long value, char character) {
+
+mainstruct* createMainStruct(int numberA, int numberB, int value, char character) {
   mainstruct* pointer = wasmMalloc(1, sizeof(mainstruct));
   if (pointer == NULL) return NULL;
 
@@ -70,4 +73,14 @@ int sumMainStruct(mainstruct* pointer) {
     + pointer->b
     + pointer->substructure.value
     + pointer->substructure.c;
+}
+
+EMSCRIPTEN_KEEPALIVE
+int getIntegerFromPointer(mainstruct* mainStructPointer) {
+  return *(mainStructPointer->pointer);
+}
+
+EMSCRIPTEN_KEEPALIVE
+int getIntegerFromPointerOfPointer(mainstruct* mainStructPointer) {
+  return *(*(mainStructPointer->pointerOfPointer));
 }

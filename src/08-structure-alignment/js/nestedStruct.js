@@ -3,7 +3,7 @@ import {
   , wasmExports
   , wasmMemory
   , startDecodeStruct
-  , startEncodeStruct
+  , encodePointer
 } from "./loadWasm.js";
 
 if (isWasmUsable) {
@@ -21,13 +21,23 @@ if (isWasmUsable) {
     const valueC = structureAlignmentInputC.value ?? 0;
     const valueD = (structureAlignmentInputD.value || "a").charCodeAt();
 
-    let pointer = wasmExports.createMainStruct(valueA, valueB, valueC, valueD);
-    const mainstruct = startDecodeStruct("mainstruct", pointer, wasmMemory);
-    pointer = wasmExports.wasmFree(pointer);
+    const mainstruct = {
+      a: valueA
+      , b: valueB
+      , substructure: {
+        value: valueC
+        , c: valueD
+      }
+      , pointer: 15
+      , pointerOfPointer: 30
+    };
 
-    pointer = startEncodeStruct("mainstruct", mainstruct, wasmMemory, true);
+    let pointer = encodePointer("mainstruct", mainstruct, wasmMemory, true);
     const sum = wasmExports.sumMainStruct(pointer);
+    console.log("- integer from pointer:", wasmExports.getIntegerFromPointer(pointer));
+    console.log("- integer from pointer of pointer:", wasmExports.getIntegerFromPointerOfPointer(pointer));
     pointer = wasmExports.wasmFree(pointer);
+    
 
     structureAlignmentSumSpan.innerHTML = `Sum: ${sum}`;
     structureAlignmentObjectSpan.innerHTML = `Struct: ${JSON.stringify(mainstruct)}`;
