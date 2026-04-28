@@ -142,7 +142,9 @@ const decodeString = (pointer) => {
 };
 
 const getTypeSize = (dataType) => {
-  return dataType.endsWith("*") ? 4 : typesMap[dataType];
+  return dataType.endsWith("*") || dataType.endsWith("[]")
+    ? 4 // TO-DO: use correct padding instead of 4 bytes
+    : typesMap[dataType];
 };
 
 const computeStructSize = (format) => {
@@ -178,15 +180,20 @@ const encodeStruct = (dataType, objectData, buffer, memory, offset = 0, pointer 
 
   for (const [propertyName, propertyType] of Object.entries(structFormat)) {
     encodeValue(propertyType, objectData[propertyName], buffer, memory, offset, pointer);
-    offset += propertyType.endsWith("*") ? 4 : typesMap[propertyType]; // TO-DO: use correct padding instead of 4 bytes
+    offset += propertyType.endsWith("*") || propertyType.endsWith("[]")
+      ? 4 // TO-DO: use correct padding instead of 4 bytes
+      : typesMap[propertyType];
   }
 };
 
 const encodeValue = (dataType, objectData, buffer, memory, offset = 0, pointer = 0) => {
   if (dataType.endsWith("*")) {
     const pointer = encodePointer(dataType.substring(0, dataType.length - 1), objectData, memory, true);
-    console.log('setting', pointer, 'at', offset);
     encodeInteger(pointer, 4, buffer, offset);
+  }
+  else if (dataType.endsWith("[]")) {
+    const arrayPointer = encodeArrayStruct(dataType.substring(0, dataType.length - 2), objectData, memory, true);
+    encodeInteger(arrayPointer, 4, buffer, offset);
   }
   else if (primitiveDataTypes.includes(dataType)) {
     if (dataType !== "float") encodeInteger(objectData ?? 0, typesMap[dataType], buffer, offset);
@@ -223,6 +230,45 @@ const encodePointer = (dataType, objectData, memory, shouldUseMalloc) => {
   // - the length (third parameter) is the structSize (in bytes)
   const buffer = new Uint8Array(memory.buffer, pointer, dataTypeSize);
   encodeValue(dataType, objectData, buffer, memory, 0, pointer);
+
+  return pointer;
+};
+
+const encodeArrayStruct = (dataType, objectData, memory, shouldUseMalloc) => {
+  if (!objectData) {
+    console.log("encodeArrayStruct null objectData.");
+    return 0;
+  }
+
+  const dataTypeElementSize = getTypeSize(dataType);
+
+  // we add one more slot for the terminator element like the \0 in strings for C
+  const dataTypeSize = (objectData.length + 1) * dataTypeElementSize;
+
+  if (!dataTypeSize) {
+    console.log(`encodeArrayStruct invalid size (${dataTypeSize}) for data type ${dataType}`);
+    return 0;
+  }
+
+  const pointer = shouldUseMalloc
+    ? wasmExports.wasmMalloc(1, dataTypeSize)
+    : wasmExports.wasmCalloc(1, dataTypeSize);
+
+  if (!pointer) {
+    console.log("encodeArrayStruct null pointer.");
+    return pointer;
+  }
+
+  const buffer = new Uint8Array(memory.buffer, pointer, dataTypeSize);
+
+  let offset = 0;
+
+  for (let arrayOffset = 0; arrayOffset < objectData.length; arrayOffset++) {
+    encodeValue(dataType, objectData[arrayOffset], buffer, memory, offset, pointer);
+    offset += dataTypeElementSize;
+  }
+
+  encodeInteger(0, dataTypeElementSize, buffer, offset); // adding the terminator element
 
   return pointer;
 };
@@ -292,6 +338,8 @@ registerStruct(
     , "substructure": "substruct"
     , "pointer": "int*"
     , "pointerOfPointer": "int**"
+    , "intArray": "int[]"
+    , "lengthArray": "int"
   }
 );
 

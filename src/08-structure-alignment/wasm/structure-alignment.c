@@ -15,6 +15,8 @@ typedef struct {
   substruct substructure;
   int* pointer;
   int** pointerOfPointer;
+  int* intArray;
+  int lengthArray;
 } mainstruct;
 
 int main() {
@@ -83,4 +85,28 @@ int getIntegerFromPointer(mainstruct* mainStructPointer) {
 EMSCRIPTEN_KEEPALIVE
 int getIntegerFromPointerOfPointer(mainstruct* mainStructPointer) {
   return *(*(mainStructPointer->pointerOfPointer));
+}
+
+EMSCRIPTEN_KEEPALIVE
+int sumArrayTerminator(mainstruct* mainStructPointer) {
+  int sum = 0;
+  int offset = 0;
+
+  while(mainStructPointer->intArray[offset]) {
+    sum += *(mainStructPointer->intArray + offset);
+    offset++;
+  }
+
+  return sum;
+}
+
+EMSCRIPTEN_KEEPALIVE
+int sumArray(mainstruct* mainStructPointer) {
+  int sum = 0;
+
+  for (int offset = 0; offset < mainStructPointer->lengthArray; offset++) {
+    sum += *(mainStructPointer->intArray + offset);
+  }
+
+  return sum;
 }
