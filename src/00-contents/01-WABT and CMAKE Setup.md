@@ -24,6 +24,6 @@ Access the following URL [https://cmake.org/download/](https://cmake.org/downloa
 cd <wabt_directory>/wabt
 mkdir build
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=..\ -G "Visual Studio 16 2019"
+cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=..\ -G "Visual Studio 18 2026"
 cmake --build . --config DEBUG --target install
 ```
