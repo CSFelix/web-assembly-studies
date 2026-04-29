@@ -6,9 +6,10 @@
 
 ## Miscellaneous
 
-- [0.0 - EMSDK Setup](https://github.com/CSFelix/web-assembly-studies/blob/main/src/00-contents/EMSDK%20Setup.md)
-- [0.1 - Pointers and Dynamic Memory](https://github.com/CSFelix/web-assembly-studies/blob/main/src/00-contents/Pointers%20and%20Dynamic%20Memory.md)
-- [0.2 - Web Assembly Flow](https://github.com/CSFelix/web-assembly-studies/blob/main/src/00-contents/Web%20Assembly%20Flow.md)
+- [0.0 - EMSDK Setup](https://github.com/CSFelix/web-assembly-studies/blob/main/src/00-contents/00-EMSDK%20Setup.md)
+- [0.1 - WABT and CMAKE Setup](https://github.com/CSFelix/web-assembly-studies/blob/main/src/00-contents/01-WABT%20and%20CMAKE%20Setup.md)
+- [0.2 - Web Assembly Flow](https://github.com/CSFelix/web-assembly-studies/blob/main/src/00-contents/02-Web%20Assembly%20Flow.md)
+- [0.3 - Pointers and Dynamic Memory](https://github.com/CSFelix/web-assembly-studies/blob/main/src/00-contents/03-Pointers%20and%20Dynamic%20Memory.md)
 
 ---
 
@@ -22,3 +23,4 @@
 - [6 - Exported Functions](https://github.com/CSFelix/web-assembly-studies/tree/main/src/06-exported-functions)
 - [7 - Encoding and Decoding Structures](https://github.com/CSFelix/web-assembly-studies/tree/main/src/07-encoding-decoding-structures)
 - [8 - Structure Alignment](https://github.com/CSFelix/web-assembly-studies/tree/main/src/08-structure-alignment)
+- [9 - Text Format](https://github.com/CSFelix/web-assembly-studies/tree/main/src/09-text-format)

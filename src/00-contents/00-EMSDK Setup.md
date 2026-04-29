@@ -21,6 +21,9 @@ git pull
 ./emsdk activate latest
 source ./emsdk_env.sh
 ```
+**OBS.:** do not forget to add `emsdk directory ($LibraryDirectory\emsdk)` into the `variables path` of your OS.
+
+---
 
 - Activating Project Folder:
 
@@ -29,6 +32,8 @@ cd <project_folder>
 emsdk activate
 emcc -v
 ```
+
+---
 
 - Compiling:
 
