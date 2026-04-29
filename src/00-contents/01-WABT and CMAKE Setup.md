@@ -34,3 +34,19 @@ cd build
 cmake .. -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_INSTALL_PREFIX=..\ -G "Visual Studio 18 2026"
 cmake --build . --config DEBUG --target install
 ```
+
+**OBS.:** do not forget to add WABT directory `<wabt_directory>/wabt/bin` into the PATH environment variable.
+
+---
+
+- Compiling Wat to Wasm:
+
+```bash
+wat2wasm <fileName>.wat -o <newFileName>.wasm
+```
+
+- Compiling Wasm to Wat:
+
+```bash
+wasm2wat <fileName>.wasm -o <newFileName>.wat
+```
