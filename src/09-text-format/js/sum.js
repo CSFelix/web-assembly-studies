@@ -14,7 +14,7 @@ if (isWasmUsable) {
     const numberB = sumNumberBInput.value ?? 0;
     const result = wasmExports.add(numberA, numberB);
 
-    sumSpan.innerHTML = `Result: ${result}`;
+    sumSpan.innerHTML = `Result Add: ${result}`;
     sumNumberAInput.focus();
   });
 }

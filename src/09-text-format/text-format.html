@@ -12,17 +12,30 @@
 
     <script type="module" src="./js/loadWasm.js"></script>
     <script type="module" src="./js/sum.js"></script>
+    <script type="module" src="./js/sumDefaultValues.js"></script>
   </head>
 
   <body>
-    <span>Hey there, Web Assembly!</span>
-    <br /><br />
-
+    <h2>Sum</h2>
     <input id="sumNumberA" type="number" autofocus />
     <input id="sumNumberB" type="number" />
     <br /><br />
     <button id="sumButton">Sum</button>
     <br /><br />
-    <span id="sumSpan">Result:</span>
+    <span id="sumSpan">Result Add:</span>
+    
+    <br /><br />
+    <hr />
+
+    <h2>Sum Default Values</h2>
+    <span id="defaultValueA">Default Value A: <b>42</b></span>
+    <br /><br />
+    <span id = "defaultValueB">Default Value B: <b>50</b></span>
+    <br /><br />
+    <button id="defaultValueButton">Sum</button>
+    <br /><br />
+    <span id="defaultValueSpan">Result Add Default Values:</span>
+    <br /><br />
+    <span id="defaultValueSeeConsoleSpan"></span>
   </body>
 </html>

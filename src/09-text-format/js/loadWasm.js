@@ -14,7 +14,7 @@ const fetchWasmFile = async (path) => {
 };
 
 const wasmExportsPromise = (async () => {
-  const wasmFile = await fetchWasmFile("./wasm/add.wasm");
+  const wasmFile = await fetchWasmFile("./wasm/textFormat.wasm");
 
   if (!wasmFile) {
     console.log("WASM File not found.");
@@ -48,6 +48,9 @@ const wasmExportsPromise = (async () => {
   const instanceObject = {
     js: {
       mem: wasmMemory
+    }
+    , console: {
+      log: console.log
     }
     , wasi_snapshot_preview1: {
       ...wasmImports
