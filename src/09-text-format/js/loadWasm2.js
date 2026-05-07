@@ -14,7 +14,7 @@ const fetchWasmFile = async (path) => {
 };
 
 const wasmExportsPromise = (async () => {
-  const wasmFile = await fetchWasmFile("./wasm/textFormat.wasm");
+  const wasmFile = await fetchWasmFile("./wasm/textFormat2.wasm");
 
   if (!wasmFile) {
     console.log("WASM File not found.");
@@ -29,11 +29,6 @@ const wasmExportsPromise = (async () => {
   const INITIAL_MEMORY_PAGES = 256; // 256 pages * 64 KiB = 16 MiB
   const MAXIMUM_MEMORY_PAGES = 512; // 512 pages * 64 KiB = 32 MiB
 
-  const wasmMemory = new WebAssembly.Memory({
-    initial: INITIAL_MEMORY_PAGES
-    , maximum: MAXIMUM_MEMORY_PAGES
-  });
-
   const resizeHeapWasm = (delta) => {
     try {
       wasmMemory.grow(delta);
@@ -45,12 +40,15 @@ const wasmExportsPromise = (async () => {
     }
   };
 
+  const logString = (offset, length) => {
+    const buffer = new Uint8Array(wasmMemory.buffer, offset, length);
+    console.log(new TextDecoder("UTF-8").decode(buffer));
+  };
+
   const instanceObject = {
-    js: {
-      mem: wasmMemory
-    }
-    , console: {
+    console: {
       log: console.log
+      , logString: logString
     }
     , wasi_snapshot_preview1: {
       ...wasmImports

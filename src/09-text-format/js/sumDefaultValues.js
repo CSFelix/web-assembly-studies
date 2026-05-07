@@ -1,7 +1,7 @@
 import {
   isWasmUsable
   , wasmExports
-} from "./loadWasm.js";
+} from "./loadWasm1.js";
 
 if (isWasmUsable) {
   const defaultValueButton = document.getElementById("defaultValueButton");
