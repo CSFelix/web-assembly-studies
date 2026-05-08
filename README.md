@@ -24,3 +24,4 @@
 - [7 - Encoding and Decoding Structures](https://github.com/CSFelix/web-assembly-studies/tree/main/src/07-encoding-decoding-structures)
 - [8 - Structure Alignment](https://github.com/CSFelix/web-assembly-studies/tree/main/src/08-structure-alignment)
 - [9 - Text Format](https://github.com/CSFelix/web-assembly-studies/tree/main/src/09-text-format)
+- [10 - Control Flow](https://github.com/CSFelix/web-assembly-studies/tree/main/src/10-control-flow)
