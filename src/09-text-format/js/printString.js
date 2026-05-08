@@ -8,7 +8,8 @@ if (isWasmUsable) {
   const printStringSpan = document.getElementById("printStringSpan");
 
   printStringButton.addEventListener("click", () => {
-    const result = wasmExports.printString();
+    wasmExports.printStringLength();
+    wasmExports.printString();
     printStringSpan.innerHTML = "<u>See the console!</u>";
   });
 }

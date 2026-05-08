@@ -40,15 +40,34 @@ const wasmExportsPromise = (async () => {
     }
   };
 
-  const logString = (offset, length) => {
+  const logStringLength = (offset, length) => {
     const buffer = new Uint8Array(wasmMemory.buffer, offset, length);
+    console.log("- logStringLength");
     console.log(new TextDecoder("UTF-8").decode(buffer));
+    console.log("---");
+  };
+
+  const logString = (offset) => {
+    const buffer = new Uint8Array(wasmMemory.buffer, offset);
+
+    let offsetSplit;
+
+    while (offsetSplit < buffer.length) {
+      if (buffer[offsetSplit] === 0) break;
+      offsetSplit += 1;
+    }
+
+    const bufferSplit = buffer.subarray(0, offsetSplit);
+
+    console.log("- logString");
+    console.log(new TextDecoder("UTF-8").decode(bufferSplit));
+    console.log("---");
   };
 
   const instanceObject = {
     console: {
-      log: console.log
-      , logString: logString
+      logStringLength
+      , logString
     }
     , wasi_snapshot_preview1: {
       ...wasmImports

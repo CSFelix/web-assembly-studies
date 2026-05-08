@@ -2,7 +2,8 @@
   ;;  *************
   ;;  ** Imports **
   ;;  *************
-  (import "console" "logString" (func $logString (param i32 i32)))
+  (import "console" "logStringLength" (func $logStringLength (param i32 i32)))
+  (import "console" "logString" (func $logString (param i32)))
 
   ;;  **************
   ;;  ** Memories **
@@ -23,17 +24,37 @@
   ;;  ***************
   ;;  ** Functions **
   ;;  *************** 
-  (func $printString (result i32)
+  (func $printStringLength (result i32)
     i32.const 0         ;; (offset) - stack: [0]
     i32.const 18        ;; (length) - stack: [0, 18]
-    call $logString     ;; stack: []
+    call $logStringLength     ;; stack: []
+
+    i32.const 48        ;; (offset) - stack: [48]
+    i32.const 103       ;; (value) - stack: [48, 103] >> 103 is the ascii code of 'g' char
+    i32.store8          ;; stack: []
+
+    i32.const 49        ;; (terminator char offset) - stack: [49]
+    i32.const 0         ;; (terminator char) - stack: [49, 0]
+    i32.store           ;; stack: []
+
+    i32.const 48        ;; (offset) - stack: [48]
+    i32.const 1         ;; (length) - stack: [48, 1]
+    call $logStringLength     ;; stack: []
 
     i32.const 0         ;; stack: [0]
+  )
+
+  (func $printString (result i32)
+    i32.const 0
+    call $logString
+
+    i32.const 0
   )
 
   ;;  *************
   ;;  ** Exports **
   ;;  *************
+  (export "printStringLength" (func $printStringLength))
   (export "printString" (func $printString))
   (export "memory" (memory $memory))
 )
