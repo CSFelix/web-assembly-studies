@@ -14,7 +14,7 @@ const fetchWasmFile = async (path) => {
 };
 
 const wasmExportsPromise = (async () => {
-  const wasmFile = await fetchWasmFile("./wasm/controlFlow.wasm");
+  const wasmFile = await fetchWasmFile("./wasm/base64.wasm");
 
   if (!wasmFile) {
     console.log("WASM File not found.");
@@ -26,8 +26,33 @@ const wasmExportsPromise = (async () => {
     return null;
   }
 
+  const INITIAL_MEMORY_PAGES = 256; // 256 pages * 64 KiB = 16 MiB
+  const MAXIMUM_MEMORY_PAGES = 512; // 512 pages * 64 KiB = 32 MiB
+
+  const wasmMemory = new WebAssembly.Memory({
+    initial: INITIAL_MEMORY_PAGES
+    , maximum: MAXIMUM_MEMORY_PAGES
+  });
+
+  const resizeHeapWasm = (delta) => {
+    try {
+      wasmMemory.grow(delta);
+      return true;
+    }
+    catch (exception) {
+      console.log("resizeHeapWasm exception:", exception);
+      return false;
+    }
+  };
+
   const instanceObject = {
-    wasi_snapshot_preview1: { ...wasmImports }
+    js: {
+      mem: wasmMemory
+    }
+    , wasi_snapshot_preview1: {
+      ...wasmImports
+      , emscripten_resize_heap: (delta) => resizeHeapWasm(delta)
+    }
   };
 
   try {
