@@ -14,7 +14,7 @@ const fetchWasmFile = async (path) => {
 };
 
 const wasmExportsPromise = (async () => {
-  const wasmFile = await fetchWasmFile("./wasm/base64.wasm");
+  const wasmFile = await fetchWasmFile("./wasm/base64c.wasm");
 
   if (!wasmFile) {
     console.log("WASM File not found.");

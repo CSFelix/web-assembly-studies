@@ -17,21 +17,20 @@ if (isWasmUsable) {
     const pointerInput = 256;
     const pointerOutput = pointerInput + inputLength + 2;
 
-    const bufferInput = new Uint8Array(wasmMemory.buffer, pointerInput);
-    for (let offset = 0; offset < inputLength; offset++) {
-      bufferInput[offset] = inputValue.charCodeAt(offset);
-    }
+    const bufferInput = new Uint8Array(wasmMemory.buffer, pointerInput, inputLength);
+    for (let offset = 0; offset < inputLength; offset++) bufferInput[offset] = inputValue.charCodeAt(offset);
 
     const outputLength = wasmExports.base64Encode(pointerInput, inputLength, pointerOutput);
     
     // ---- Getting Value ----
     let base64String = "";
 
-    const bufferOutput = new Uint8Array(wasmMemory.buffer, pointerOutput);
-    for (let offset = 0; offset < outputLength; offset++) {
+    const bufferOutput = new Uint8Array(wasmMemory.buffer, pointerOutput, outputLength);
+    for (let offset = 0; offset < outputLength && bufferOutput[offset] !== 0; offset++) {
       base64String += String.fromCharCode(bufferOutput[offset]);
     }
 
     base64CSpan.innerHTML = `Result: ${base64String}`;
+    base64CInput.focus();
   });
 }

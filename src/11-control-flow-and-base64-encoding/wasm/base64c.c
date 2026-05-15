@@ -3,7 +3,7 @@
 // array with 64 letters + terminator char
 char base64Table[65] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-void base64EncodeValues(unsigned char* data, int length, unsigned int* output) {
+void base64EncodeValues(unsigned char* data, int length, unsigned char* output) {
   for (int offsetInput = 0, offsetOutput = 0; offsetInput < length;) {
     // iterating through three octets
     unsigned int octetA = offsetInput < length ? *(data + offsetInput++) : 0; // 8 bits
@@ -12,21 +12,21 @@ void base64EncodeValues(unsigned char* data, int length, unsigned int* output) {
     unsigned int octetConcat = (octetA << 16) | (octetB << 8) | (octetC << 0); // 24 bits
 
     // extracting the 6 bits groups and then converting into four base 64 characters
-    output[offsetOutput++] = *(base64Table + ((octetConcat >> 18) & 0x3f));
-    output[offsetOutput++] = *(base64Table + ((octetConcat >> 12) & 0x3f));
-    output[offsetOutput++] = *(base64Table + ((octetConcat >> 6) & 0x3f));
-    output[offsetOutput++] = *(base64Table + ((octetConcat >> 0) & 0x3f));
+    *(output + offsetOutput++) = *(base64Table + ((octetConcat >> 18) & 0x3f));
+    *(output + offsetOutput++) = *(base64Table + ((octetConcat >> 12) & 0x3f));
+    *(output + offsetOutput++) = *(base64Table + ((octetConcat >> 6) & 0x3f));
+    *(output + offsetOutput++) = *(base64Table + ((octetConcat >> 0) & 0x3f));
   }
 }
 
-void base64AddPaddingBits(unsigned int* output, int lengthOutput, int padding) {
+void base64AddPaddingBits(unsigned char* output, int lengthOutput, int padding) {
   for (int paddingOffset = 0; paddingOffset < padding; paddingOffset++) {
     *(output + lengthOutput - 1 - paddingOffset) = '=';
   }
 }
 
 EMSCRIPTEN_KEEPALIVE
-int base64Encode(unsigned char* data, int length, unsigned int* output) {
+int base64Encode(unsigned char* data, int length, unsigned char* output) {
   /*
     Base 64 Step-by-Step:
 
