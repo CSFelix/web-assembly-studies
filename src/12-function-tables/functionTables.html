@@ -11,9 +11,25 @@
     <link rel="shortcut icon" type="image/svg+xml" href="./assets/wasm.svg" />
 
     <script type="module" src="./js/loadWasm.js"></script>
+    <script type="module" src="./js/functionTables.js"></script>
   </head>
 
   <body>
     <h2>Function Tables</h2>
+    <input id="numberAInput" type="number" />
+    <input id="numberBInput" type="number" />
+    <br /><br />
+    <button id="addButton">Add</button>
+    <button id="subButton">Sub</button>
+    <button id="mulButton">Mul</button>
+    <button id="divButton">Div</button>
+    <br /><br />
+    <span id="resultAddSpan">Result Add:</span>
+    <br /><br />
+    <span id="resultSubSpan">Result Sub:</span>
+    <br /><br />
+    <span id="resultMulSpan">Result Mul:</span>
+    <br /><br />
+    <span id="resultDivSpan">Result Div (integer):</span>
   </body>
 </html>
