@@ -19,21 +19,21 @@ if (isWasmUsable) {
 
   const operation = (numberA, numberB, operation) => {
     let result = 0;
-
+    console.log(wasmExports.functionTable)
     if (operation === "ADD") {
-      result = wasmExports.add(numberA, numberB);
+      result = wasmExports.functionTable.get(0)(numberA, numberB);
       resultAddSpan.innerHTML = `Result Add: <b>${result}</b>`;
     }
     else if (operation === "SUB") {
-      result = wasmExports.sub(numberA, numberB);
+      result = wasmExports.functionTable.get(1)(numberA, numberB);
       resultSubSpan.innerHTML = `Result Sub: <b>${result}</b>`;
     }
     else if (operation === "MUL") {
-      result = wasmExports.mul(numberA, numberB);
+      result = wasmExports.functionTable.get(2)(numberA, numberB);
       resultMulSpan.innerHTML = `Result Mul: <b>${result}</b>`;
     }
     else {
-      result = wasmExports.div(numberA, numberB);
+      result = wasmExports.functionTable.get(3)(numberA, numberB);
       resultDivSpan.innerHTML = `Result Div (integer): <b>${result}</b>`;
     }
 

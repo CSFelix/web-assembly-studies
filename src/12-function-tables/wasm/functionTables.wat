@@ -3,21 +3,12 @@
   ;;  ** Types **
   ;;  ***********
   (type $OPERATION 
-    (func
-      ;; (param i32 i32)
-      (param i32)
-      (param i32)
-      (result i32)
-    )
+    (func (param i32) (param i32) (result i32))
   )
 
   ;;  ***************
   ;;  ** Functions **
   ;;  ***************
-  (func $set (type $OPERATION)
-    local.get 1
-  )
-
   (func $add (type $OPERATION)
     local.get 0
     local.get 1
@@ -42,12 +33,17 @@
     i32.div_s
   )
 
+  ;;  ************
+  ;;  ** Tables **
+  ;;  ************
+  (table $functionTable 4 funcref) ;; will store 4 function references
+  (elem (i32.const 0) $add)
+  (elem (i32.const 1) $sub)
+  (elem (i32.const 2) $mul)
+  (elem (i32.const 3) $div)
+
   ;;  *************
   ;;  ** Exports **
   ;;  *************
-  (export "set" (func $set))
-  (export "add" (func $add))
-  (export "sub" (func $sub))
-  (export "mul" (func $mul))
-  (export "div" (func $div))
+  (export "functionTable" (table $functionTable))
 )
