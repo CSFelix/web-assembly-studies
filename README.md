@@ -27,3 +27,4 @@
 - [10 - Control Flow](https://github.com/CSFelix/web-assembly-studies/tree/main/src/10-control-flow)
 - [11 - Control Flow and Base 64 Encoding](https://github.com/CSFelix/web-assembly-studies/tree/main/src/11-control-flow-and-base64-encoding)
 - [12 - Function Tables](https://github.com/CSFelix/web-assembly-studies/tree/main/src/12-function-tables)
+- [13 - SIMD Instructions](https://github.com/CSFelix/web-assembly-studies/tree/main/src/13-simd-instructions)
