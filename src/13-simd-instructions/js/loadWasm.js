@@ -26,33 +26,8 @@ const wasmExportsPromise = (async () => {
     return null;
   }
 
-  const INITIAL_MEMORY_PAGES = 256; // 256 pages * 64 KiB = 16 MiB
-  const MAXIMUM_MEMORY_PAGES = 512; // 512 pages * 64 KiB = 32 MiB
-
-  const wasmMemory = new WebAssembly.Memory({
-    initial: INITIAL_MEMORY_PAGES
-    , maximum: MAXIMUM_MEMORY_PAGES
-  });
-
-  const resizeHeapWasm = (delta) => {
-    try {
-      wasmMemory.grow(delta);
-      return true;
-    }
-    catch (exception) {
-      console.log("resizeHeapWasm exception:", exception);
-      return false;
-    }
-  };
-
   const instanceObject = {
-    js: {
-      mem: wasmMemory
-    }
-    , wasi_snapshot_preview1: {
-      ...wasmImports
-      , emscripten_resize_heap: (delta) => resizeHeapWasm(delta)
-    }
+    wasi_snapshot_preview1: { ...wasmImports }
   };
 
   try {

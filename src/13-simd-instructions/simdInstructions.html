@@ -11,9 +11,19 @@
     <link rel="shortcut icon" type="image/svg+xml" href="./assets/wasm.svg" />
 
     <script type="module" src="./js/loadWasm.js"></script>
+    <script type="module" src="./js/sum.js"></script>
   </head>
 
   <body>
     <h2>SIMD Instructions</h2>
+    
+    <span>- Array A: <code>[1, 2, 3, 4]</code></span>
+    <br /><br />
+    <span>- Array B: <code>[5, 6, 7, 8]</code></span>
+    <br /><br />
+
+    <button id="sumButton">SUM</button>
+    <br /><br />
+    <span id="simdSumResultSpan">SIMD Result:</span>
   </body>
 </html>
